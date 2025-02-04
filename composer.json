@@ -1,0 +1,72 @@
+{
+    "name": "ivansabat/sendpulse-rest-api-laravel",
+    "description": "A service provider and facade to set up and use the SendPulse PHP library in Laravel.",
+    "type": "library",
+    "keywords": [
+        "sendpulse",
+        "php",
+        "laravel",
+        "rest",
+        "api"
+    ],
+    "homepage": "https://github.com/IvanSabat/sendpulse-rest-api-laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Sabat",
+            "email": "ivan.sabat@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "IvanSabat\\SendPulse\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IvanSabat\\SendPulse\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "sendpulse/rest-api": "^2.0.1.2",
+        "guzzlehttp/guzzle": "^7.9.2",
+        "illuminate/support": "^11.41",
+        "illuminate/contracts": "*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.20",
+        "pestphp/pest": "^3.7.4",
+        "orchestra/testbench": "^9.9",
+        "phpstan/phpstan": "^2.1.2"
+    },
+    "version": "1.0.0",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Providers\\SendPulseServiceProvider"
+            ],
+            "aliases": {
+                "Sendpulse": "IvanSabat\\SendPulse\\SendPulse"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ]
+    }
+}

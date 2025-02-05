@@ -3,11 +3,12 @@
 namespace IvanSabat\SendPulse;
 
 use Illuminate\Support\Facades\Log;
+use IvanSabat\SendPulse\Contracts\SendPulseContract;
 use Sendpulse\RestApi\ApiClient;
 use Sendpulse\RestApi\ApiClientException;
 use Sendpulse\RestApi\Storage\FileStorage;
 
-class SendPulse
+class SendPulse implements SendPulseContract
 {
     private ApiClient $apiClient;
 
@@ -28,7 +29,7 @@ class SendPulse
     /**
      * @throws ApiClientException
      */
-    public static function listAddressBooks()
+    public static function listAddressBooks(): ?array
     {
         try {
             return app('sendpulse')->apiClient->get('addressbooks');
@@ -40,7 +41,7 @@ class SendPulse
     /**
      * @throws ApiClientException
      */
-    public static function addEmails(int $bookId, array $emails, array $additionalParams = [])
+    public static function addEmails(int $bookId, array $emails, array $additionalParams = []): ?array
     {
         if (empty($bookId) || empty($emails)) {
             throw new ApiClientException('Empty book id or emails');
@@ -56,6 +57,27 @@ class SendPulse
             }
 
             return app('sendpulse')->apiClient->post('addressbooks/' . $bookId . '/emails', $data);
+        } catch (ApiClientException $e) {
+            throw new ApiClientException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws ApiClientException
+     */
+    public function updateEmailVariables(int $bookId, string $email, array $vars): ?array
+    {
+        if (empty($bookId) || empty($email)) {
+            throw new ApiClientException('Empty book id or emails');
+        }
+
+        try {
+            $data = ['email' => $email, 'variables' => []];
+            foreach ($vars as $name => $val) {
+                $data['variables'][] = ['name' => $name, 'value' => $val];
+            }
+
+            return app('sendpulse')->apiClient->post('addressbooks/' . $bookId . '/emails/variable', $data);
         } catch (ApiClientException $e) {
             throw new ApiClientException($e->getMessage());
         }

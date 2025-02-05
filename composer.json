@@ -48,7 +48,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Providers\\SendPulseServiceProvider"
+                "IvanSabat\\SendPulse\\Providers\\SendPulseServiceProvider"
             ],
             "aliases": {
                 "Sendpulse": "IvanSabat\\SendPulse\\SendPulse"

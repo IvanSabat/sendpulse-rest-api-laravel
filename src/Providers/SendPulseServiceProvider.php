@@ -20,7 +20,7 @@ class SendPulseServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../config/sendpulse.php' => config_path('sendpulse.php'),
+            __DIR__.'/../../config/sendpulse.php' => config_path('sendpulse.php'),
         ]);
     }
 }

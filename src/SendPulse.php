@@ -25,16 +25,40 @@ class SendPulse
         return $this->apiClient->$method(...$args);
     }
 
-    public static function getAddressBooks(): ?array
+    /**
+     * @throws ApiClientException
+     */
+    public static function listAddressBooks()
     {
-        $sendPulse = app('sendpulse');
         try {
-            return $sendPulse->apiClient->get('addressbooks');
+            return app('sendpulse')->apiClient->get('addressbooks');
         } catch (ApiClientException $e) {
-            Log::error($e->getMessage(), ['method' => 'getAddressBooks']);
+            throw new ApiClientException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws ApiClientException
+     */
+    public static function addEmails(int $bookId, array $emails, array $additionalParams = [])
+    {
+        if (empty($bookId) || empty($emails)) {
+            throw new ApiClientException('Empty book id or emails');
         }
 
-        return null;
+        try {
+            $data = [
+                'emails' => $emails,
+            ];
+
+            if ($additionalParams) {
+                $data = array_merge($data, $additionalParams);
+            }
+
+            return app('sendpulse')->apiClient->post('addressbooks/' . $bookId . '/emails', $data);
+        } catch (ApiClientException $e) {
+            throw new ApiClientException($e->getMessage());
+        }
     }
 
     // Add more methods according to SendPulse API functionalities you need

@@ -65,12 +65,8 @@ class SendPulse implements SendPulseContract
     /**
      * @throws ApiClientException
      */
-    public function updateEmailVariables(int $bookId, string $email, array $vars): ?array
+    public static function updateEmailVariables(int $bookId, string $email, array $vars): ?array
     {
-        if (empty($bookId) || empty($email)) {
-            throw new ApiClientException('Empty book id or emails');
-        }
-
         try {
             $data = ['email' => $email, 'variables' => []];
             foreach ($vars as $name => $val) {
